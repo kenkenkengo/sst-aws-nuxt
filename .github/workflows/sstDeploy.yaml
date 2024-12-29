@@ -15,37 +15,53 @@ permissions:
   contents: read
 
 jobs:
-  aws-login:
+  set-stage-name:
     runs-on: ubuntu-latest
+    outputs:
+      stage_name: ${{ steps.set-stage.outputs.stage_name }}
     steps:
-      - name: checkout
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: configure aws credentials
+      - name: Set stage name
+        id: set-stage
+        run: |
+          if [ "${GITHUB_REF#refs/heads/}" = "main" ]; then
+            echo "stage_name=prod" >> $GITHUB_OUTPUT
+          elif [ "${GITHUB_REF#refs/heads/}" = "stage" ]; then
+            echo "stage_name=stage" >> $GITHUB_OUTPUT
+          else
+            echo "stage_name=dev" >> $GITHUB_OUTPUT
+          fi
+
+  aws-login:
+    needs: set-stage-name
+    runs-on: ubuntu-latest
+    environment: ${{ needs.set-stage-name.outputs.stage_name }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: "arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ secrets.ASSUME_ROLE_NAME }}"
           aws-region: ap-northeast-1
 
   sst-deploy:
-    needs: aws-login
+    needs: [set-stage-name, aws-login]
     runs-on: ubuntu-latest
     steps:
-      - name: set stage name
-        run: |
-          if [ "${GITHUB_REF#refs/heads/}" = "main" ]; then
-            echo "STAGE_NAME=prod" >> $GITHUB_ENV
-          else
-            echo "STAGE_NAME=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
-          fi
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: install Node.js
+      - name: Install Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "20"
 
-      - name: install npm packages
+      - name: Install npm packages
         run: npm install
 
-      - name: sst deploy
-        run: npx sst deploy --stage $STAGE_NAME
+      - name: SST Deploy
+        run: npx sst deploy --stage ${{ needs.set-stage-name.outputs.stage_name }}
