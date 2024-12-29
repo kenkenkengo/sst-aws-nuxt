@@ -34,7 +34,7 @@ jobs:
             echo "stage_name=dev" >> $GITHUB_OUTPUT
           fi
 
-  aws-login:
+  deploy:
     needs: set-stage-name
     runs-on: ubuntu-latest
     environment: ${{ needs.set-stage-name.outputs.stage_name }}
@@ -47,13 +47,6 @@ jobs:
         with:
           role-to-assume: "arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ secrets.ASSUME_ROLE_NAME }}"
           aws-region: ap-northeast-1
-
-  sst-deploy:
-    needs: [set-stage-name, aws-login]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
 
       - name: Install Node.js
         uses: actions/setup-node@v4
