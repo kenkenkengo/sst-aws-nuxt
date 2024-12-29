@@ -16,25 +16,49 @@ https://sst.dev/docs/environment-variables/#_top
 ### 作成
 
 ```
-npx sst secret set <name> [value] --stage dev
+<!-- local環境 -->
+AWS_PROFILE={{profile名}} npx sst secret set <name> [value]
+<!-- dev環境 -->
+AWS_PROFILE={{profile名}} npx sst secret set <name> [value] --stage dev
 ```
 
 ### 確認
 
 ```
-npx sst secret list --stage dev
+<!-- local環境 -->
+AWS_PROFILE={{profile名}} npx sst secret list
+<!-- dev環境 -->
+AWS_PROFILE={{profile名}} npx sst secret list --stage dev
 ```
 
 ### 削除
 
 ```
-npx sst secret remove <name> --stage dev
+<!-- local環境 -->
+AWS_PROFILE={{profile名}} npx sst secret remove <name>
+<!-- dev環境 -->
+AWS_PROFILE={{profile名}} npx sst secret remove <name> --stage dev
+```
+
+## local development
+
+```
+AWS_PROFILE={{profile名}} npx sst dev
 ```
 
 ## deploy
 
-AWS の profile は sst.config.ts の設定により、stage に応じて切り替えられます。
+```
+AWS_PROFILE={{profile名}} npx sst deploy --stage dev
+```
 
-```
-npx sst deploy --stage dev
-```
+## CI/CD
+
+GitHub Actions で sst deploy を実行します。
+
+事前準備として、Assume Role するための IAM ロールの作成を行ってください。
+また、GitHub Actions の環境作成（prod, stage, dev）・シークレット（AWS_ACCOUNT_ID, ASSUME_ROLE_NAME） の登録も行ってください。
+ブランチの運用は main, stage, dev とします。
+
+参考：
+https://qiita.com/generoKoki/items/bcf87549a18a1481d62e
