@@ -8,6 +8,7 @@ on:
   #     - dev
   #   types:
   #     - closed
+  # 手動でワークフローを実行する場合はこちら
   workflow_dispatch:
 
 permissions:
