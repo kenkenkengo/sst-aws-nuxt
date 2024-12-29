@@ -6,23 +6,6 @@ export default $config({
       name: "aws-nuxt",
       removal: input?.stage === "prod" ? "retain" : "remove",
       home: "aws",
-      providers: {
-        aws: {
-          // 環境毎にプロファイルを切り替える
-          profile: (() => {
-            switch (input?.stage) {
-              case "prod":
-                return "jyp-mirrorsnap-pro-prod";
-              case "stage":
-                return "jyp-mirrorsnap-pro-stage";
-              case "dev":
-                return "jyp-mirrorsnap-pro-stage";
-              default:
-                throw new Error(`Unknown stage: ${input.stage}`);
-            }
-          })()
-        }
-      }
     };
   },
   async run() {
