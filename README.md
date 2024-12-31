@@ -46,6 +46,8 @@ AWS_PROFILE={{profile名}} npx sst secret remove <name> --stage dev
 AWS_PROFILE={{profile名}} npx sst dev
 ```
 
+AWS 管理画面を開き、開発用 API Gateway の Route にアタッチされている Lambda Authorizer を デタッチしてから開発します。
+
 ## deploy
 
 ```
