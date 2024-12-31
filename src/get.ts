@@ -3,7 +3,7 @@ import { DynamoDBClient, GetItemCommand } from "@aws-sdk/client-dynamodb";
 
 export async function handler() {
   console.log(process.env.DEBUG, "get");
-  console.log("password", Resource.TestPassword.value);
+  console.log("verifyToken", Resource.VerifyToken.value);
 
   const client = new DynamoDBClient();
 

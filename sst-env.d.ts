@@ -6,6 +6,14 @@ import "sst"
 export {}
 declare module "sst" {
   export interface Resource {
+    "BasicAuthPassword": {
+      "type": "sst.sst.Secret"
+      "value": string
+    }
+    "BasicAuthUserName": {
+      "type": "sst.sst.Secret"
+      "value": string
+    }
     "Domain": {
       "type": "sst.sst.Secret"
       "value": string
@@ -13,6 +21,10 @@ declare module "sst" {
     "MyApi": {
       "type": "sst.aws.ApiGatewayV2"
       "url": string
+    }
+    "MyApiAuthorizerLambdaAuthorizerFunction": {
+      "name": string
+      "type": "sst.aws.Function"
     }
     "MyTable": {
       "name": string
@@ -22,7 +34,7 @@ declare module "sst" {
       "type": "sst.aws.StaticSite"
       "url": string
     }
-    "TestPassword": {
+    "VerifyToken": {
       "type": "sst.sst.Secret"
       "value": string
     }
