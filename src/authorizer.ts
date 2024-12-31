@@ -7,7 +7,7 @@ export const handler = async (
   const originVerify = event.headers?.['x-origin-verify'];
 
   try {
-    // リクエストのヘッダーに含まれるトークンと、シークレットマネージャーに保存されているトークンが一致しているかチェックする
+    // リクエストのヘッダーに含まれるトークンと、sst secretに保存されているトークンが一致しているかチェックする
     if (originVerify === Resource.VerifyToken.value) {
       return {
         isAuthorized: true,
