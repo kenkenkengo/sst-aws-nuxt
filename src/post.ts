@@ -1,13 +1,14 @@
 import { Resource } from "sst";
-import { DynamoDBClient, PutItemCommand } from "@aws-sdk/client-dynamodb";
+import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
+import { DynamoDBDocumentClient, PutCommand } from '@aws-sdk/lib-dynamodb';
 
 export async function handler() {
-  const client = new DynamoDBClient();
+  const client = DynamoDBDocumentClient.from(new DynamoDBClient());
 
-  await client.send(new PutItemCommand({
+  await client.send(new PutCommand({
     TableName: Resource.MyTable.name,
     Item: {
-      code: { S: "1" },
+      code: "1",
     },
   }));
 
