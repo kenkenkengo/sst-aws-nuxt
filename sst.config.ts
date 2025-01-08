@@ -30,13 +30,14 @@ export default $config({
       }
     });
 
+    // 開発時は全てのドメインを許可する
+    const allowOrigins = $dev === true ? "*" : $resolve(domainSecret.value).apply(domain => `https://${domain}`)
 
     // API Gateway Settings
     const api = new sst.aws.ApiGatewayV2("MyApi", {
       cors: {
         allowOrigins: [
-          $resolve(domainSecret.value).apply(domain => `https://${domain}`),
-          "http://localhost:3000"
+          allowOrigins
         ]
       }
     });
@@ -57,6 +58,13 @@ export default $config({
       },
     });
 
+    // Lambda Authorizer の認証設定
+    const authConfig = $dev === true ? {} : {
+      auth: {
+        lambda: lambdaAuthorizer.id,
+      }
+    };
+
     // API Route
     api.route("GET /api/get",
       {
@@ -70,11 +78,7 @@ export default $config({
           format: "json",
         },
       },
-      {
-        auth: {
-          lambda: lambdaAuthorizer.id,
-        },
-      }
+      authConfig
     );
 
     api.route("POST /api/post",
@@ -86,11 +90,7 @@ export default $config({
           format: "json",
         },
       },
-      {
-        auth: {
-          lambda: lambdaAuthorizer.id,
-        },
-      }
+      authConfig
     );
 
 
