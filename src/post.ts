@@ -1,15 +1,9 @@
-import { Resource } from "sst";
-import { DynamoDBClient, PutItemCommand } from "@aws-sdk/client-dynamodb";
+import { CodeContent } from "./lib/entity";
 
 export async function handler() {
-  const client = new DynamoDBClient();
-
-  await client.send(new PutItemCommand({
-    TableName: Resource.MyTable.name,
-    Item: {
-      code: { S: "1" },
-    },
-  }));
+  await CodeContent.create({
+    code: "3",
+  }).go();
 
   return {
     statusCode: 200,

@@ -22,9 +22,12 @@ export default $config({
     // DynamoDB Settings
     const table = new sst.aws.Dynamo("MyTable", {
       fields: {
-        code: "string"
+        pk: "string",
       },
-      primaryIndex: { hashKey: "code" }
+      primaryIndex: { hashKey: "pk" },
+      globalIndexes: {
+        byCode: { hashKey: "pk" }
+      }
     });
 
 

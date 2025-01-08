@@ -1,19 +1,12 @@
-import { Resource } from "sst";
-import { DynamoDBClient, GetItemCommand } from "@aws-sdk/client-dynamodb";
+import { CodeContent } from "./lib/entity";
 
 export async function handler() {
-  console.log(process.env.DEBUG, "get");
-  console.log("verifyToken", Resource.VerifyToken.value);
-
-  const client = new DynamoDBClient();
-
-  const data = await client.send(new GetItemCommand({
-    TableName: Resource.MyTable.name,
-    Key: { code: { S: "1" } },
-  }));
+  const data = await CodeContent.get({
+    code: "3",
+  }).go();
 
   return {
     statusCode: 200,
-    body: JSON.stringify(data.Item),
+    body: JSON.stringify(data),
   };
 }
