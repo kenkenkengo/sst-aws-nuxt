@@ -6,37 +6,5 @@ import "sst"
 export {}
 declare module "sst" {
   export interface Resource {
-    "BasicAuthPassword": {
-      "type": "sst.sst.Secret"
-      "value": string
-    }
-    "BasicAuthUserName": {
-      "type": "sst.sst.Secret"
-      "value": string
-    }
-    "Domain": {
-      "type": "sst.sst.Secret"
-      "value": string
-    }
-    "MyApi": {
-      "type": "sst.aws.ApiGatewayV2"
-      "url": string
-    }
-    "MyApiAuthorizerLambdaAuthorizerFunction": {
-      "name": string
-      "type": "sst.aws.Function"
-    }
-    "MyTable": {
-      "name": string
-      "type": "sst.aws.Dynamo"
-    }
-    "MyWeb": {
-      "type": "sst.aws.StaticSite"
-      "url": string
-    }
-    "VerifyToken": {
-      "type": "sst.sst.Secret"
-      "value": string
-    }
   }
 }
