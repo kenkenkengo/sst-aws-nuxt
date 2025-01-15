@@ -2,7 +2,7 @@ import { CodeContent } from "./lib/entity";
 
 export async function handler() {
   await CodeContent.create({
-    code: "3",
+    code: "1",
   }).go();
 
   return {

@@ -11,13 +11,13 @@ export default $config({
   async run() {
     const domainSecret = new sst.Secret("Domain");
     const verifyTokenSecret = new sst.Secret("VerifyToken");
-    const username = new sst.Secret("BasicAuthUserName");
-    const password = new sst.Secret("BasicAuthPassword");
+    // const username = new sst.Secret("BasicAuthUserName");
+    // const password = new sst.Secret("BasicAuthPassword");
 
-    const basicAuth = $resolve([username.value, password.value]).apply(
-      ([username, password]) =>
-        Buffer.from(`${username}:${password}`).toString("base64")
-    );
+    // const basicAuth = $resolve([username.value, password.value]).apply(
+    //   ([username, password]) =>
+    //     Buffer.from(`${username}:${password}`).toString("base64")
+    // );
 
     // DynamoDB Settings
     const table = new sst.aws.Dynamo("MyTable", {
@@ -143,24 +143,24 @@ export default $config({
           ).apply(val => [...val, cacheBehavior]);
         },
       },
-      edge: {
-        viewerRequest: {
-          injection: $interpolate`
-            // basic auth
-            if (
-              !event.request.headers.authorization
-                || event.request.headers.authorization.value !== "Basic ${basicAuth}"
-            ) {
-              return {
-                statusCode: 401,
-                headers: {
-                  "www-authenticate": { value: "Basic" }
-                }
-              };
-            }
-          `
-        }
-      },
+      // edge: {
+      //   viewerRequest: {
+      //     injection: $interpolate`
+      //       // basic auth
+      //       if (
+      //         !event.request.headers.authorization
+      //           || event.request.headers.authorization.value !== "Basic ${basicAuth}"
+      //       ) {
+      //         return {
+      //           statusCode: 401,
+      //           headers: {
+      //             "www-authenticate": { value: "Basic" }
+      //           }
+      //         };
+      //       }
+      //     `
+      //   }
+      // },
     });
   },
 });
