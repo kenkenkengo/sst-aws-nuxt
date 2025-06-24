@@ -3,7 +3,10 @@ import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
 import { Entity } from "electrodb";
 
-const client = DynamoDBDocumentClient.from(new DynamoDBClient());
+let client: DynamoDBDocumentClient;
+if (!client) {
+  client = DynamoDBDocumentClient.from(new DynamoDBClient());
+}
 const table = Resource.MyTable.name;
 
 export const CodeContent = new Entity(
